@@ -1,12 +1,12 @@
 package com.spartronics4915.lib.hardware.motors;
 
-import com.revrobotics.CANAnalog;
-import com.revrobotics.CANEncoder;
+import com.revrobotics.SparkMaxAnalogSensor;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.REVLibError;
-import com.revrobotics.CANPIDController;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANAnalog.AnalogMode;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.SparkMaxAnalogSensor.Mode;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -38,10 +38,10 @@ public class SpartronicsMax implements SpartronicsMotor
     private double mMotionProfileAcceleration = 0.0;
     private boolean mUseMotionProfileForPosition = false;
 
-    private CANEncoder mEncoderSensor;
-    private CANAnalog mAnalogSensor;
-    private CANPIDController mPIDController;
-    private AnalogMode mAnalogMode;
+    private RelativeEncoder mEncoderSensor;
+    private SparkMaxAnalogSensor mAnalogSensor;
+    private SparkMaxPIDController mPIDController;
+    private Mode mAnalogMode;
     private FeedbackSensorType mFeedbackSensor;
 
     public class InternalEncoder implements SpartronicsEncoder
@@ -182,14 +182,14 @@ public class SpartronicsMax implements SpartronicsMotor
                 mPIDController.setFeedbackDevice(mEncoderSensor);
                 break;
             case kAnalogRelative:
-                mAnalogMode = AnalogMode.kRelative;
+                mAnalogMode = Mode.kRelative;
                 mAnalogSensor = mSparkMax.getAnalog(mAnalogMode);
                 err = mAnalogSensor.setVelocityConversionFactor(kRPMtoRPS);
                 mEncoder = new AnalogEncoder();
                 mPIDController.setFeedbackDevice(mAnalogSensor);
                 break;
             case kAnalogAbsolute:
-                mAnalogMode = AnalogMode.kAbsolute;
+                mAnalogMode = Mode.kAbsolute;
                 mAnalogSensor = mSparkMax.getAnalog(mAnalogMode);
                 err = mAnalogSensor.setVelocityConversionFactor(kRPMtoRPS);
                 mEncoder = new AnalogEncoder();
@@ -223,9 +223,9 @@ public class SpartronicsMax implements SpartronicsMotor
     /**
      * @return An object for interfacing with a connected analog sensor.
      */
-    public CANAnalog getAnalog()
+    public SparkMaxAnalogSensor getAnalog()
     {
-        return mSparkMax.getAnalog(AnalogMode.kAbsolute);
+        return mSparkMax.getAnalog(Mode.kAbsolute);
     }
 
     @Override
@@ -315,7 +315,7 @@ public class SpartronicsMax implements SpartronicsMotor
     @Override
     public void setPercentOutput(double dutyCycle, double arbitraryFeedForwardVolts)
     {
-        mPIDController.setReference(dutyCycle, ControlType.kDutyCycle, 0,
+        mPIDController.setReference(dutyCycle, CANSparkMax.ControlType.kDutyCycle, 0,
             arbitraryFeedForwardVolts);
     }
 
@@ -329,7 +329,7 @@ public class SpartronicsMax implements SpartronicsMotor
     public void setVelocity(double velocityMetersPerSecond, double arbitraryFeedForwardVolts)
     {
         double velocityNative = mSensorModel.toNativeUnits(velocityMetersPerSecond);
-        mPIDController.setReference(velocityNative, ControlType.kVelocity, kVelocitySlotIdx,
+        mPIDController.setReference(velocityNative, CANSparkMax.ControlType.kVelocity, kVelocitySlotIdx,
             arbitraryFeedForwardVolts);
     }
 
@@ -353,7 +353,7 @@ public class SpartronicsMax implements SpartronicsMotor
     {
         double positionNativeUnits = mSensorModel.toNativeUnits(positionMeters);
         mPIDController.setReference(positionNativeUnits,
-            mUseMotionProfileForPosition ? ControlType.kSmartMotion : ControlType.kPosition,
+            mUseMotionProfileForPosition ? CANSparkMax.ControlType.kSmartMotion : CANSparkMax.ControlType.kPosition,
             kPositionSlotIdx);
     }
 
@@ -387,7 +387,7 @@ public class SpartronicsMax implements SpartronicsMotor
     @Override
     public void setNeutral()
     {
-        mPIDController.setReference(0.0, ControlType.kDutyCycle, 0);
+        mPIDController.setReference(0.0, CANSparkMax.ControlType.kDutyCycle, 0);
     }
 
     public FeedbackSensorType getFeedbackSensor()
