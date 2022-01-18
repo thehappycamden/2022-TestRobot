@@ -1,11 +1,21 @@
 package com.spartronics4915.frc2022;
 
 import com.spartronics4915.frc2022.commands.ExampleCommand;
+import com.spartronics4915.frc2022.commands.JoystickMotorCommand;
 import com.spartronics4915.frc2022.subsystems.ExampleSubsystem;
+import com.spartronics4915.frc2022.subsystems.JoystickMotor;
+import com.spartronics4915.lib.subsystems.SpartronicsSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * This class is where the bulk of the robot should be declared.
@@ -17,17 +27,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
-    public final ExampleSubsystem mExampleSubsystem;
-    public final ExampleCommand mAutoCommand;
+    // public final ExampleSubsystem mExampleSubsystem;
+    public final JoystickMotor mJoystickMotor;
+
+    // public final ExampleCommand mAutoCommand;
+    public final JoystickMotorCommand mJoystickMotorCommands;
+
+    // private final int kJoystickPort = Constants.OI.kJoystickId;
+    public static final Joystick mDriverController = new Joystick(Constants.OI.kJoystickId);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
         // ...and constructed here.
-        mExampleSubsystem = new ExampleSubsystem();
-        mAutoCommand = new ExampleCommand(mExampleSubsystem);
+        // mExampleSubsystem = new ExampleSubsystem();
+        // mAutoCommand = new ExampleCommand(mExampleSubsystem);
+        mJoystickMotor = JoystickMotor.getInstance();
+        mJoystickMotorCommands = new JoystickMotorCommand(mJoystickMotor);
 
         configureButtonBindings();
+        SmartDashboard.putString("Container","Completed");
+
+		mJoystickMotor.setDefaultCommand(new JoystickMotorCommand(mJoystickMotor));
     }
 
     /** Use this method to define your button ==> command mappings. */
@@ -40,6 +61,6 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        return mAutoCommand;
+        return null;
     }
 }
