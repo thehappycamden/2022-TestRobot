@@ -2,7 +2,7 @@ package com.spartronics4915.lib.hardware.motors;
 
 import com.revrobotics.CANAnalog;
 import com.revrobotics.CANEncoder;
-import com.revrobotics.CANError;
+import com.revrobotics.REVLibError;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -171,7 +171,7 @@ public class SpartronicsMax implements SpartronicsMotor
         mPIDController = mSparkMax.getPIDController();
         mFeedbackSensor = feedbackSensor;
 
-        CANError err;
+        REVLibError err;
         switch (feedbackSensor)
         {
             case kInternal:
@@ -197,9 +197,9 @@ public class SpartronicsMax implements SpartronicsMotor
                 break;
             default:
                 mEncoder = new InternalEncoder();
-                err = CANError.kError; // stops errors. Should never happen
+                err = REVLibError.kError; // stops errors. Should never happen
         }
-        if (err != CANError.kOk)
+        if (err != REVLibError.kOk)
         {
             Logger.error("SparkMax on with ID " + mSparkMax.getDeviceId()
                 + " returned a non-OK error code on sensor configuration... Is the motor controller plugged in?");
