@@ -1,5 +1,19 @@
 # Spartronics 4915's Test Bed 2022
 
+## Provenance
+
+This set of Test Bed code was prepared from the [Spartronics Template](https://github.com/Spartronics4915/Template).
+
+ - Updated WPILib to latest (as of 1.18.22 version 2022.2.1), and updated CTRE and REV Robotics libraries.
+ - Forked the Template into 2022-Template, and cloned a local copy.
+ - Copied the 'lib' portion of [SpartonicsLib](https://github.com/Spartronics4915/SpartronicsLib) under 'Spartronics4915' in the cloned copy.
+ - Based on a couple of pre-attempts, there seem to be a need for a lot of changes in the 'math' portion of the library, so removed the 'math' subdirectory.
+ - Opened 2022-Template in WPILib VSCode, and performed the Gradle import - into 2022-TestRobot.
+ - Worked through issues around changes between 2021 and 2022 in CTRE and REV Robotics library.
+ - Removed 'estimator' subdirectory from SpartronicsLib section, as we're not using LIDAR at the moment.
+ - Removed 'SpartronicsAnalogEncoder' for now - as there is an error on deprecated createDouble that is not clear how to resolve.
+ - Added Troy's Joystick code.
+
 ## Usage
 
 ### Prerequisites
