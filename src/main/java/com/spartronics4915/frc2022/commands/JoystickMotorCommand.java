@@ -54,7 +54,7 @@ public class JoystickMotorCommand extends CommandBase
     /** Takes an input x and raises it power a.
      * Copies the sign of the original to ensure that the curve is an odd function.
      * Takes absolute value of original to ensure that there are no issues with raising negative numbers to weird powers.
-     * Demonstration at https://www.desmos.com/calculator/r2l8w5som8
+     * Demonstration at https://www.desmos.com/calculator/bodonb3nbh
      */
     private double applyResponseCurve(double x, double a)
     {
