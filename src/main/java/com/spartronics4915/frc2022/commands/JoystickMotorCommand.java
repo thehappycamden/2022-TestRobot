@@ -58,7 +58,6 @@ public class JoystickMotorCommand extends CommandBase
      */
     private double applyResponseCurve(double x, double a)
     {
-        // copied from 2020-InfiniteRecharge, no idea how it works (magic)
         return Math.copySign(Math.pow(Math.abs(x), a), x); // apply response curve
     }
 }
