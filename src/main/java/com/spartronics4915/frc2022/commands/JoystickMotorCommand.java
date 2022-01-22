@@ -3,6 +3,7 @@ package com.spartronics4915.frc2022.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
 
+import com.spartronics4915.frc2022.Constants;
 import com.spartronics4915.frc2022.Constants.*;
 import com.spartronics4915.frc2022.subsystems.JoystickMotor;
 
@@ -37,9 +38,7 @@ public class JoystickMotorCommand extends CommandBase
             y *= -1;
         }
 
-        // copied from 2020-InfiniteRecharge, no idea how it works (magic)
-        y = Math.copySign(Math.pow(Math.abs(y), JoystickMotorConstants.kJoystickResponseCurve), y); // apply response curve
-        mJoystickMotor.set(applyDeadzone(y, JoystickMotorConstants.kJoystickDeadzone));
+        mJoystickMotor.set(applyResponseCurve(applyDeadzone(y, Constants.JoystickMotorConstants.kJoystickDeadzone), Constants.JoystickMotorConstants.kJoystickResponseCurve));
     }
 
     // also copied from ir2020
@@ -50,5 +49,15 @@ public class JoystickMotorCommand extends CommandBase
             return 0.0;
         }
         return val;
+    }
+
+    /** Takes an input x and raises it power a.
+     * Copies the sign of the original to ensure that the curve is an odd function.
+     * Takes absolute value of original to ensure that there are no issues with raising negative numbers to weird powers.
+     */
+    private double applyResponseCurve(double x, double a)
+    {
+        // copied from 2020-InfiniteRecharge, no idea how it works (magic)
+        return Math.copySign(Math.pow(Math.abs(x), a), x); // apply response curve
     }
 }
