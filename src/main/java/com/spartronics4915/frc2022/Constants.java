@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public final class Constants
 {
 
-	public static final int kTestMotorId = 1;
+	public static final int kTestMotorId = 9;
     public static final double kTestMotorSpeed = 0.3;
 
     public static final class OI

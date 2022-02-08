@@ -1,14 +1,15 @@
 package com.spartronics4915.frc2022.subsystems;
 
 import com.spartronics4915.frc2022.Constants;
-import com.spartronics4915.lib.hardware.motors.SpartronicsFalcon;
-import com.spartronics4915.lib.hardware.motors.SpartronicsMotor;
 import com.spartronics4915.lib.subsystems.SpartronicsSubsystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.REVLibError;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -16,7 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class JoystickMotor extends SpartronicsSubsystem
 {
     private static JoystickMotor sInstance = null;
-    private static SpartronicsMotor mMotor;
+    private static TalonFX mMotor;
     private static Joystick mJoystick;
 
     public JoystickMotor()
@@ -24,7 +25,7 @@ public class JoystickMotor extends SpartronicsSubsystem
         boolean success = true;
         try
         {
-            mMotor = SpartronicsFalcon.makeMotor(Constants.kTestMotorId);
+            mMotor = new TalonFX(Constants.kTestMotorId);
             mJoystick = new Joystick(Constants.OI.kJoystickId);
         }
         catch (Exception exception)
@@ -46,8 +47,15 @@ public class JoystickMotor extends SpartronicsSubsystem
     public void set(double speed)
     {
         SmartDashboard.putString("Motor","Setting Speed");
-        mMotor.setVelocity(speed);
-    
+        mMotor.set(ControlMode.PercentOutput,speed);
+        SmartDashboard.putNumber("Speed",mMotor.getSelectedSensorVelocity());
+    }
+
+    public double getSpeed()
+    {
+        SmartDashboard.putString("Motor","Getting Speed");
+        return mMotor.getSelectedSensorVelocity();
+    }
 
     public Joystick getJoystick()
     {
