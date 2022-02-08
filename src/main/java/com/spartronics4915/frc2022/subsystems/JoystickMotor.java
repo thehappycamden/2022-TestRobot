@@ -1,6 +1,8 @@
 package com.spartronics4915.frc2022.subsystems;
 
 import com.spartronics4915.frc2022.Constants;
+import com.spartronics4915.lib.hardware.motors.SpartronicsFalcon;
+import com.spartronics4915.lib.hardware.motors.SpartronicsMotor;
 import com.spartronics4915.lib.subsystems.SpartronicsSubsystem;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,7 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class JoystickMotor extends SpartronicsSubsystem
 {
     private static JoystickMotor sInstance = null;
-    private static CANSparkMax mMotor;
+    private static SpartronicsMotor mMotor;
     private static Joystick mJoystick;
 
     public JoystickMotor()
@@ -22,7 +24,7 @@ public class JoystickMotor extends SpartronicsSubsystem
         boolean success = true;
         try
         {
-            mMotor = new CANSparkMax(Constants.kTestMotorId, MotorType.kBrushless);
+            mMotor = SpartronicsFalcon.makeMotor(Constants.kTestMotorId);
             mJoystick = new Joystick(Constants.OI.kJoystickId);
         }
         catch (Exception exception)
@@ -44,15 +46,8 @@ public class JoystickMotor extends SpartronicsSubsystem
     public void set(double speed)
     {
         SmartDashboard.putString("Motor","Setting Speed");
-        mMotor.set(speed);
-        SmartDashboard.putNumber("Speed",mMotor.get());
-    }
-
-    public double getSpeed()
-    {
-        SmartDashboard.putString("Motor","Getting Speed");
-        return mMotor.get();
-    }
+        mMotor.setVelocity(speed);
+    
 
     public Joystick getJoystick()
     {
